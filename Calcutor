@@ -1,0 +1,54 @@
+#Calculator 
+from art import logo
+
+#Add
+def add(n1,n2):
+  return n1 + n2
+
+#Substract
+def substract(n1,n2):
+  return n1 - n2
+
+#Multiply
+def multiply(n1,n2):
+  return n1 * n2
+
+#Divide
+def divide(n1,n2):
+  return n1 / n2
+
+operation = {"+" : add,
+             "-": substract,
+             "*" : multiply,
+             "/" : divide
+            }
+
+
+
+def calculator():
+  print(logo)
+  continue_ch = False
+  
+  num1 = float(input("Enter the first number : "))
+      
+  while continue_ch is False:  
+      for i in operation:
+        print(i)
+      symbol_choosen = input("Enter the operation from above: ")  
+      num2 = float(input("Enter the next number : "))
+      operation_ch=operation[symbol_choosen]
+      answer=operation_ch(num1,num2)
+      
+      print(f"{num1} {symbol_choosen} {num2} = {answer}")
+      
+      continue_ch2 = input(f"Do you want to contiue the operation with {answer}, Enter 'y' to continue and 'n' to start a new operation: ") 
+      
+      if continue_ch2 == "n":
+        continue_ch = True
+        calculator()
+      elif continue_ch2 == "y":
+        num1 = answer
+        
+  
+calculator()  
+  
