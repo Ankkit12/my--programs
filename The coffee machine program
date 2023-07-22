@@ -1,0 +1,112 @@
+MENU = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "coffee": 18,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "milk": 150,
+            "coffee": 24,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "milk": 100,
+            "coffee": 24,
+        },
+        "cost": 3.0,
+    }
+}
+
+resources = {
+        "water": 300,
+        "milk": 200,
+        "coffee": 100,
+}
+profit = 0
+
+
+def check_money(total,choice):
+    cost=MENU[f"{choice}"]["cost"]
+    global profit
+    if total == cost:
+        profit = profit + cost
+        return True
+    elif total < cost:
+        print("Sorry that's not enough money. Money refunded")
+        return False
+    elif total > cost:
+        refund = total - cost
+        refund = round(refund, 2)
+        print(f"Here is ${refund}. in change")
+        profit = profit + cost
+        return True
+
+
+def check_resources(choice):
+    if choice == "espresso":
+        if resources["water"] < MENU[f"{choice}"]["ingredients"]["water"]:
+            print("Sorry there is not enough water")
+            return True
+        elif resources["coffee"] < MENU[f"{choice}"]["ingredients"]["coffee"]:
+            print("Sorry there is not enough coffee")
+            return True
+    else:
+        if resources["milk"] < MENU[f"{choice}"]["ingredients"]["milk"]:
+            print("Sorry there is not enough milk")
+            return True
+        elif resources["water"] < MENU[f"{choice}"]["ingredients"]["water"]:
+            print("Sorry there is not enough water")
+            return True
+        elif resources["coffee"] < MENU[f"{choice}"]["ingredients"]["coffee"]:
+            print("Sorry there is not enough coffee")
+            return  True
+
+
+def make_coffee(choice):
+    """This function deducts the resources used and makes the coffee"""
+    if ch == "espresso":
+        resources["water"] =resources["water"] - MENU[f"{choice}"]["ingredients"]["water"]
+        resources["coffee"] = resources["coffee"] - MENU[f"{choice}"]["ingredients"]["coffee"]
+        print(f"Enjoy your {choice}☕")
+    else:
+        resources["water"] = resources["water"] - MENU[f"{choice}"]["ingredients"]["water"]
+        resources["coffee"] = resources["coffee"] - MENU[f"{choice}"]["ingredients"]["coffee"]
+        resources["milk"] = resources["milk"] - MENU[f"{choice}"]["ingredients"]["milk"]
+        print(f"Enjoy your {choice}☕")
+
+
+machine_off = False
+quarter = 0.25
+d = 0.10
+n = 0.05
+p = 0.01
+
+while not machine_off:
+    ch = input("What would you like?(espresso/latte/cappuccino): ")
+    if ch == "off":
+        machine_off = True
+    elif ch == "report":
+        print(f"water: {resources['water']}ml")
+        print(f"milk: {resources['milk']}ml")
+        print(f"coffee: {resources['coffee']}g")
+        print(f"profit: ${profit}")
+    else:
+        new = check_resources(ch)
+        if new:
+            machine_off = True
+        else:
+            print("Please insert coins.")
+            qua = int(input("How many quarters: "))
+            dm = int(input("How many dimes:"))
+            nk = int(input("How many nickles:"))
+            pn = int(input("How many pennies:"))
+            total_money = (quarter * qua) + (d * dm) + (n * nk) + (p * pn)
+            if check_money(total_money, ch):
+                make_coffee(ch)
